@@ -8,10 +8,10 @@ from todos import todolist
 @app.route('/todos')
 def getProducts():
     return jsonify({'products': todolist})
-@app.route('/products/<string:product_name>')
+@app.route('/todos/<string:todo_name>')
 def getProduct(todo_name):
     todosFound = [
-        todo for todo in todolist if todo['name'] == todo_name.lower()]
+        todo for todo in todolist if todo['name'] == todo_name]
     if (len(todosFound) > 0):
         return jsonify({'product': todosFound[0]})
     return jsonify({'message': 'Product Not found'})
