@@ -6,25 +6,31 @@ from todos import todolist
 
 # Получение данный(Get запрос)
 @app.route('/todos')
-def getProducts():
-    return jsonify({'products': todolist})
+def getTodos():
+    return jsonify({'todos': todolist})
+
+
 @app.route('/todos/<string:todo_name>')
 def getProduct(todo_name):
     todosFound = [
         todo for todo in todolist if todo['name'] == todo_name]
     if (len(todosFound) > 0):
-        return jsonify({'product': todosFound[0]})
-    return jsonify({'message': 'Product Not found'})
+        return jsonify({'todos': todosFound[0]})
+    return jsonify({'message': 'Todos Not found'})
+
+
 
 # Добавление записей в список todolist
 @app.route('/todos', methods=['POST'])
 def addProduct():
     new_product = {
         'name': request.json['name'],
-        'price': request.json['price'],
+        'todo': request.json['todo'],
     }
     todolist.append(new_product)
-    return jsonify({'products': todolist})
+    return jsonify({'todos': todolist})
+
+
 
 # Обновление записей в списке todos по его названию
 @app.route('/todos/<string:todo_name>', methods=['PUT'])
@@ -32,13 +38,15 @@ def editProduct(todo_name):
     todosFound = [todo for todo in todolist if todo['name'] == todo_name]
     if (len(todosFound) > 0):
         todosFound[0]['name'] = request.json['name']
-        todosFound[0]['price'] = request.json['price']
+        todosFound[0]['todo'] = request.json['todo']
        
         return jsonify({
-            'message': 'Product Updated',
-            'product': todosFound[0]
+            'message': 'Todos Updated',
+            'todo': todosFound[0]
         })
-    return jsonify({'message': 'Product Not found'})
+    return jsonify({'message': 'Todos Not found'})
+
+
 
 # Удаление записей в списке todos по его названию
 @app.route('/todos/<string:todo_name>', methods=['DELETE'])
@@ -47,8 +55,8 @@ def deleteTodo(todo_name):
     if len(todosFound) > 0:
         todolist.remove(todosFound[0])
         return jsonify({
-            'message': 'Product Deleted',
-            'products': todolist
+            'message': 'Todo Deleted',
+            'todo': todolist
         })
 
 # Сервер запущен на порте 5000
